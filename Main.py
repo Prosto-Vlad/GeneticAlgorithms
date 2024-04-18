@@ -1,7 +1,7 @@
 from ClassicGenetic import ClassicGenetic
 from Population import Population
 
-initPopulation = Population(population_size=20, chromosome_size=5)
+initPopulation = Population(population_size=20, chromosome_size=5, generate=1)
 
 initPopulation.fitness_all()
 
