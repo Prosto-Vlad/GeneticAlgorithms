@@ -11,3 +11,10 @@ class Chromosome:
         for i in range(self.chromosomeSize):
             if self.chromosome[i] == '1':
                 self.fitness += 1
+        if self.fitness == self.chromosomeSize:
+            return 1
+        else:
+            return 0
+
+    def print_chromosome(self):
+        print(self.chromosome)

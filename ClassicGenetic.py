@@ -26,9 +26,9 @@ class ClassicGenetic:
                     return chromosome
 
     def crossover(self, parent1, parent2):
-        crossover_point = int(len(parent1.chromosomes))
-        temp = parent1.chromosomes[0:crossover_point]
-        temp.extend(parent2.chromosomes[crossover_point:])
+        crossover_point = int(random.randint(0, self.population.chromosomeSize))
+        temp = parent1.chromosome[0:crossover_point]
+        temp += parent2.chromosome[crossover_point:]
 
         child = Chromosome(self.population.chromosomeSize)
         child.chromosome = temp
@@ -42,6 +42,8 @@ class ClassicGenetic:
             genes_list[mutation_point] = "0" if genes_list[mutation_point] == "1" else "1"
             chromosome.chromosome = ''.join(genes_list)
             chromosome.calc_fitness()
+            return chromosome
+        else:
             return chromosome
 
     def genetic_algorithm(self):
@@ -57,7 +59,7 @@ class ClassicGenetic:
 
             temp_population.append(child)
 
-        result = Population(self.population.populationSize, self.population.chromosomesSize, 0)
+        result = Population(self.population.populationSize, self.population.chromosomeSize, 0)
         result.chromosomes = temp_population
-        result.fitness_all()
+        self.population = result
         return result
