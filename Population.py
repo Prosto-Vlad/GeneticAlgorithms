@@ -12,9 +12,10 @@ class Population:
                 self.chromosomes.append(Chromosome.Chromosome(chromosome_size))
 
     def fitness_all(self):
-
         for i in range(self.populationSize):
             self.chromosomes[i].calc_fitness()
+            if self.chromosomes[i].fitness == self.chromosomeSize:
+                return 1
 
     def best_fitness(self):
         for i in range(self.populationSize):
