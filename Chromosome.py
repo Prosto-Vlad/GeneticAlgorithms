@@ -1,20 +1,18 @@
 import random
 
 class Chromosome:
-    def __init__(self, chromosome_size):
-        self.chromosomeSize = chromosome_size
-        self.chromosome = ''.join([random.choice(['0', '1']) for _ in range(self.chromosomeSize)])
+    def __init__(self, name, cost, worth, time):
+        self.cost = cost
+        self.worth = worth
+        self.time = time
+        self.name = name
         self.fitness = 0
+
 
     def calc_fitness(self):
         self.fitness = 0
-        for i in range(self.chromosomeSize):
-            if self.chromosome[i] == '1':
-                self.fitness += 1
-        if self.fitness == self.chromosomeSize:
-            return 1
-        else:
-            return 0
+        self.fitness = self.fitness + (1/self.cost)*10
+        self.fitness = self.fitness + self.worth
 
     def print_chromosome(self):
-        print(self.chromosome)
+        print('| ' + self.name + ' | ' + str(self.cost) + ' | ' + str(self.worth) + ' | ' + str(self.time) + ' |')
