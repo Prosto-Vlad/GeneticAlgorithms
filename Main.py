@@ -1,4 +1,5 @@
 from Chromosome import Chromosome
+from Gene import Gene
 from ClassicGenetic import ClassicGenetic
 from Population import Population
 import time
@@ -26,5 +27,13 @@ import time
 #
 # print("Час виконання: {:.2f} мікросекунд".format(elapsed_time_microseconds))
 
-test_chrom = Chromosome("name", 10, 20, 30)
-test_chrom.print_chromosome()
+purchases = []
+with open("D:\GIT\GeneticAlgorithms\data\chromosomes.txt", 'r') as file:
+    for line in file:
+        data = line.strip().split(',')
+        purchase = Gene(data[0], float(data[1]), float(data[2]), int(data[3]))
+        purchases.append(purchase)
+
+chromosome = Chromosome(10)
+chromosome.generate(purchases)
+chromosome.print_chromosome()

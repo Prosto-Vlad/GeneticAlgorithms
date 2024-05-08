@@ -1,18 +1,25 @@
 import random
+from Gene import Gene
 
 class Chromosome:
-    def __init__(self, name, cost, worth, time):
-        self.cost = cost
-        self.worth = worth
-        self.time = time
-        self.name = name
+    def __init__(self, size):
+        self.genes = []
+        self.size = size
         self.fitness = 0
 
+    def generate(self, data):
+        time = 0
+        while time <= self.size:
+            gene = data.pop(random.randint(0, len(data) - 1))
+            self.genes.append(gene)
+            time += gene.time
+        if time > self.size:
+            self.genes.pop()
 
     def calc_fitness(self):
-        self.fitness = 0
-        self.fitness = self.fitness + (1/self.cost)*10
-        self.fitness = self.fitness + self.worth
+        for gene in self.genes:
+            gene.calc_fitness()
 
     def print_chromosome(self):
-        print('| ' + self.name + ' | ' + str(self.cost) + ' | ' + str(self.worth) + ' | ' + str(self.time) + ' |')
+        for gene in self.genes:
+            gene.print_chromosome()

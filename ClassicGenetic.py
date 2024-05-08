@@ -26,13 +26,8 @@ class ClassicGenetic:
                     return chromosome
 
     def crossover(self, parent1, parent2):
-        crossover_point = int(random.randint(0, self.population.chromosomeSize))
-        temp = parent1.chromosome[0:crossover_point]
-        temp += parent2.chromosome[crossover_point:]
+        child = Chromosome()
 
-        child = Chromosome(self.population.chromosomeSize)
-        child.chromosome = temp
-        child.calc_fitness()
         return child
 
     def mutate(self, chromosome):
