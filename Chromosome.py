@@ -9,12 +9,14 @@ class Chromosome:
 
     def generate(self, data):
         time = 0
+        temp_data = data.copy()
         while time <= self.size:
-            gene = data.pop(random.randint(0, len(data) - 1))
+            gene = temp_data.pop(random.randint(0, len(temp_data) - 1))
             self.genes.append(gene)
             time += gene.time
         if time > self.size:
             self.genes.pop()
+
 
     def calc_fitness(self):
         for gene in self.genes:

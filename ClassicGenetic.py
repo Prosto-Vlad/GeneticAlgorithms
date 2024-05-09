@@ -27,9 +27,10 @@ class ClassicGenetic:
 
     def crossover(self, parent1, parent2):
         child = Chromosome()
-
+        #TODO робити кросовер
         return child
 
+    # TODO зробити мутацію
     def mutate(self, chromosome):
         if random.random() < self.mutationRate:
             mutation_point = random.randint(0, len(chromosome.chromosome) - 1)

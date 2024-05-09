@@ -8,7 +8,7 @@ class Gene:
         self.name = name
         self.fitness = 0
 
-
+    # TODO переробити обрахунок фітнеса
     def calc_fitness(self):
         self.fitness = 0
         self.fitness = self.fitness + (1/self.cost)*10

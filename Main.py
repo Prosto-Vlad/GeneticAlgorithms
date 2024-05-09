@@ -34,6 +34,8 @@ with open("D:\GIT\GeneticAlgorithms\data\chromosomes.txt", 'r') as file:
         purchase = Gene(data[0], float(data[1]), float(data[2]), int(data[3]))
         purchases.append(purchase)
 
-chromosome = Chromosome(10)
-chromosome.generate(purchases)
-chromosome.print_chromosome()
+# chromosome = Chromosome(10)
+# chromosome.generate(purchases)
+# chromosome.print_chromosome()
+popul = Population(20, 20, 1, purchases)
+popul.print()
