@@ -1,5 +1,7 @@
+import math
 import random
 from Gene import Gene
+import numpy as np
 
 class Chromosome:
     def __init__(self, size):
@@ -7,21 +9,31 @@ class Chromosome:
         self.size = size
         self.fitness = 0
 
-    def generate(self, data):
-        time = 0
-        temp_data = data.copy()
-        while time <= self.size:
-            gene = temp_data.pop(random.randint(0, len(temp_data) - 1))
-            self.genes.append(gene)
-            time += gene.time
-        if time > self.size:
-            self.genes.pop()
+        self.genes = np.random.randint(2, size=self.size)
 
+    def calc_fitness(self, data, maxBudget):
+        total_cost = 0
+        total_count = 0
+        total_popularity = 0
+        genre_list = []
 
-    def calc_fitness(self):
-        for gene in self.genes:
-            gene.calc_fitness()
+        for i in range(self.size):
+            if self.genes[i] == 1:
+                total_count += 1
+                total_popularity += data[i].get_popularity()
+                total_cost += data[i].get_cost()/100
+                genre_list.append(data[i].get_genre())
+
+        self.fitness += (total_cost/total_count)
+        self.fitness += total_popularity
+
+        
+
+        if total_cost > maxBudget:
+            self.fitness += maxBudget - total_cost
+
+        return self.fitness
 
     def print_chromosome(self):
         for gene in self.genes:
-            gene.print_chromosome()
+            gene.print_gene()

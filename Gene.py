@@ -1,18 +1,19 @@
 
 
 class Gene:
-    def __init__(self, name, cost, worth, time):
+    def __init__(self, cost, popularity, genre):
         self.cost = cost
-        self.worth = worth
-        self.time = time
-        self.name = name
-        self.fitness = 0
+        self.genre = genre
+        self.popularity = popularity
 
-    # TODO переробити обрахунок фітнеса
-    def calc_fitness(self):
-        self.fitness = 0
-        self.fitness = self.fitness + (1/self.cost)*10
-        self.fitness = self.fitness + self.worth
+    def print_gene(self):
+        print(self.popularity + ', ' + str(self.cost))
 
-    def print_chromosome(self):
-        print('| ' + self.name + ' | ' + str(self.cost) + ' | ' + str(self.worth) + ' | ' + str(self.time) + ' |')
+    def get_popularity(self):
+        return self.popularity
+
+    def get_genre(self):
+        return self.genre
+
+    def get_cost(self):
+        return self.cost

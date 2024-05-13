@@ -8,11 +8,15 @@ from Population import Population
 class ClassicGenetic:
     def __init__(self, population, mutation_rate, elitism):
         self.population = population
+        self.population.fitness_all()
         self.mutationRate = mutation_rate
         self.elitism = elitism
 
     def print(self):
         self.population.print()
+
+    def get_max_fitness(self):
+        return self.population.calc_max_fitness()
 
     def wheel_selection(self):
         self.population.fitness_all()
@@ -26,8 +30,8 @@ class ClassicGenetic:
                     return chromosome
 
     def crossover(self, parent1, parent2):
-        child = Chromosome()
-        #TODO робити кросовер
+        child = Chromosome(self.population.chromosomeSize)
+        #TODO зробити кросовер
         return child
 
     # TODO зробити мутацію
@@ -44,18 +48,19 @@ class ClassicGenetic:
 
     def genetic_algorithm(self):
         temp_population = []
-        temp_population[:self.elitism] = self.population.best_chromosome(self.elitism)
+        temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
         for i in range(self.elitism, self.population.populationSize):
             parent1 = self.wheel_selection()
             parent2 = self.wheel_selection()
 
             child = self.crossover(parent1, parent2)
 
-            child = self.mutate(child)
+            #child = self.mutate(child)
 
             temp_population.append(child)
 
         result = Population(self.population.populationSize, self.population.chromosomeSize, 0)
         result.chromosomes = temp_population
         self.population = result
+        self.population.fitness_all()
         return result
