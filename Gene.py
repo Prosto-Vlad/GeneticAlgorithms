@@ -1,5 +1,4 @@
 
-
 class Gene:
     def __init__(self, cost, popularity, genre):
         self.cost = cost

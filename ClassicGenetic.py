@@ -1,14 +1,11 @@
-import copy
 import random
 
 from Chromosome import Chromosome
 from Population import Population
 
-
 class ClassicGenetic:
     def __init__(self, population, mutation_rate, elitism):
         self.population = population
-        self.population.fitness_all()
         self.mutationRate = mutation_rate
         self.elitism = elitism
 
@@ -19,29 +16,35 @@ class ClassicGenetic:
         return self.population.calc_max_fitness()
 
     def wheel_selection(self):
-        self.population.fitness_all()
-        total_fitness = sum(chromosome.fitness for chromosome in self.population.chromosomes)
+        total_fitness = sum(abs(chromosome.fitness) for chromosome in self.population.chromosomes)
         for _ in range(len(self.population.chromosomes)):
             rand = random.uniform(0, total_fitness)
             current_sum = 0
             for chromosome in self.population.chromosomes:
-                current_sum += chromosome.fitness
+                current_sum += abs(chromosome.fitness)
                 if current_sum >= rand:
                     return chromosome
 
+    # FIXME зробити декілька точок кросовера. Або зробити відсотковий кросовер, який залежить від фітнеса батьків
     def crossover(self, parent1, parent2):
-        child = Chromosome(self.population.chromosomeSize)
-        #TODO зробити кросовер
+        child = Chromosome(self.population.chromosomeSize, self.population.data)
+
+        temp = []
+
+        crossover_point = random.randint(0, self.population.chromosomeSize - 1)
+
+        temp[:crossover_point] = parent1.genes[:crossover_point]
+        temp[crossover_point:] = parent2.genes[crossover_point:]
+
+        child.chromosomes = temp
+
         return child
 
-    # TODO зробити мутацію
     def mutate(self, chromosome):
         if random.random() < self.mutationRate:
-            mutation_point = random.randint(0, len(chromosome.chromosome) - 1)
-            genes_list = list(chromosome.chromosome)
-            genes_list[mutation_point] = "0" if genes_list[mutation_point] == "1" else "1"
-            chromosome.chromosome = ''.join(genes_list)
-            chromosome.calc_fitness()
+            for i in range(3):
+                mutation_point = random.randint(0, len(chromosome.genes) - 1)
+                chromosome.genes[mutation_point] = "0" if chromosome.genes[mutation_point] == "1" else "1"
             return chromosome
         else:
             return chromosome
@@ -55,12 +58,14 @@ class ClassicGenetic:
 
             child = self.crossover(parent1, parent2)
 
-            #child = self.mutate(child)
+            child = self.mutate(child)
 
             temp_population.append(child)
 
-        result = Population(self.population.populationSize, self.population.chromosomeSize, 0)
+        result = Population(self.population.populationSize, self.population.maxBudget, 0, self.population.data)
         result.chromosomes = temp_population
+
         self.population = result
         self.population.fitness_all()
+
         return result

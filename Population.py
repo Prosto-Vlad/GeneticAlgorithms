@@ -1,5 +1,4 @@
 from Chromosome import Chromosome
-import numpy as np
 
 class Population:
     def __init__(self, population_size, max_budget, generate, data):
@@ -11,18 +10,25 @@ class Population:
 
         if generate == 1:
             for i in range(population_size):
-                chromosome = Chromosome(self.chromosomeSize)
+                chromosome = Chromosome(self.chromosomeSize, data)
                 self.chromosomes.append(chromosome)
 
     def fitness_all(self):
         for chromosome in self.chromosomes:
-            chromosome.calc_fitness(self.data, self.maxBudget)
+            chromosome.calc_fitness(self.maxBudget)
 
     #TODO ереробити прінт
     def print(self):
         for i in range(self.populationSize):
             print("Chromosome %d" % i)
             self.chromosomes[i].print_chromosome()
+            print()
+
+    def print_fitness(self):
+        for i in range(self.populationSize):
+            # print("Chromosome %d" % i)
+            # print("Fitness: %f" % self.chromosomes[i].fitness)
+            print(self.chromosomes[i].get_fitness(), end=" ")
 
     def info(self):
         print("Population size: %d" % self.populationSize)
