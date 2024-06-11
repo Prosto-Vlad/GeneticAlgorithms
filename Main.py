@@ -5,7 +5,7 @@ from Population import Population
 from Chromosome import Chromosome
 
 purchases = []
-with open("D:\GeneticAlgorithms\data\chromosomes.txt", 'r') as file:
+with open("D:/Git/3 курс 2 семестр/GeneticAlgorithms/data/chromosomes.txt", 'r') as file:
     for line in file:
         data = line.strip().split(',')
         purchase = Gene(int(data[0]), int(data[1]), data[2])
@@ -30,11 +30,11 @@ while stop_iter < 10000:
     else:
         stop_iter += 1
     i += 1
-    if i%1000 == 0:
+    if i%1 == 0:
         max_chrom = ParallelGenetic.get_max_fitness()
         print("Iter " + str(i))
         print("Max: " + str(max_chrom.get_fitness()))
-        #max_chrom.print_test()
+        max_chrom.print_test()
         ParallelGenetic.population.print_fitness()
         print()
 
