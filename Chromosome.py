@@ -1,4 +1,5 @@
 import numpy as np
+from collections import Counter
 
 class Chromosome:
     def __init__(self, size, data):
@@ -7,11 +8,16 @@ class Chromosome:
         self.fitness = 0
         self.data = data
 
-        self.genes = np.random.randint(2, size=self.size)
-
         self.total_popularity = 0
         self.total_cost = 0
         self.unique_genres = 0
+
+        self.genes = np.random.randint(2, size=self.size)
+        unique_genres = set()
+        for gene in data:
+            unique_genres.add(gene.get_genre())
+        self.genre_count = len(unique_genres)
+        self.popularity_count = sum(abs(gene.popularity) for gene in self.data)
 
     def get_fitness(self):
         return self.fitness
@@ -36,13 +42,16 @@ class Chromosome:
                 total_cost += self.data[i].get_cost()
                 genre_list.append(self.data[i].get_genre())
 
-        if total_cost > max_budget:
-            self.fitness += (max_budget - total_cost) / 10
-
-        self.fitness += total_popularity
-
         unique_genres = len(set(genre_list))
-        self.fitness += unique_genres*10
+        A = 1
+        B = 2
+        self.fitness = total_popularity * A + unique_genres * B
+        #TODO: придумати більш оптимальний штраф за перевищення
+        if total_cost > max_budget:
+            if total_cost >= max_budget*2:
+                self.fitness = 0
+            else:
+                self.fitness *= max_budget / total_cost
 
         #test
         self.total_popularity = total_popularity

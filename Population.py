@@ -26,8 +26,6 @@ class Population:
 
     def print_fitness(self):
         for i in range(self.populationSize):
-            # print("Chromosome %d" % i)
-            # print("Fitness: %f" % self.chromosomes[i].fitness)
             print(self.chromosomes[i].get_fitness(), end=" ")
 
     def info(self):

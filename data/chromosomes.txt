@@ -1,0 +1,50 @@
+1680, 7, Adventure
+799, 6, Detective
+1380, 8, Fantasy
+1110, 5, Economic
+920, 9, Puzzle
+2000, 7, Mystic
+650, 4, Family
+1555, 8, Science Fiction
+860, 6, Classic
+1350, 9, Strategy
+1199, 8, Strategy
+620, 6, Sci-Fi
+1800, 9, Time Travel
+519, 4, Puzzle
+1518, 7, Cooperative
+999, 8, Classic
+2200, 9, Role-playing
+750, 5, Card
+1220, 6, Military
+1650, 7, Adventure
+780, 6, Detective
+1425, 8, Fantasy
+1145, 5, Economic
+940, 9, Puzzle
+1980, 7, Mystic
+680, 4, Family
+1590, 8, Science Fiction
+880, 6, Classic
+1325, 9, Strategy
+1205, 8, Strategy
+640, 6, Sci-Fi
+1820, 9, Time Travel
+505, 4, Puzzle
+1542, 7, Cooperative
+1010, 8, Classic
+2230, 9, Role-playing
+725, 5, Card
+1205, 6, Military
+1690, 7, Adventure
+805, 6, Detective
+1395, 8, Fantasy
+1105, 5, Economic
+915, 9, Puzzle
+2010, 7, Mystic
+670, 4, Family
+1565, 8, Science Fiction
+870, 6, Classic
+1345, 9, Strategy
+1185, 8, Strategy
+610, 6, Sci-Fi

@@ -3,7 +3,7 @@ from Chromosome import Chromosome
 from Population import Population
 
 
-class ClassicGenetic:
+class ParallelGenetic:
     def __init__(self, population, mutation_rate, crossover_rate, elitism):
         self.population = population
         self.mutationRate = mutation_rate
