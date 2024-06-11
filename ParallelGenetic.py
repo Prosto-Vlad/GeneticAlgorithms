@@ -1,4 +1,5 @@
 import random
+from multiprocessing import Pool
 from Chromosome import Chromosome
 from Population import Population
 
@@ -53,15 +54,18 @@ class ParallelGenetic:
     def genetic_algorithm(self):
         temp_population = []
         temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
-        for i in range(self.elitism, self.population.populationSize):
+        #TODO: паралельність
+        def generate_offspring(i):
             parent1 = self.wheel_selection()
             parent2 = self.wheel_selection()
-
             child = self.crossover(parent1, parent2)
-
             child = self.mutate(child)
+            return child
 
-            temp_population.append(child)
+        with Pool(processes=8) as pool:
+            offsprings = pool.map(generate_offspring, range(self.elitism, self.population.populationSize))
+
+        temp_population.extend(offsprings)
 
         result = Population(self.population.populationSize, self.population.maxBudget, 0, self.population.data)
         result.chromosomes = temp_population
