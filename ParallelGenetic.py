@@ -51,27 +51,34 @@ class ParallelGenetic:
         else:
             return chromosome
     
+    # @staticmethod
+    # def offspring_task(self):
+    #     parent1 = self.wheel_selection()
+    #     parent2 = self.wheel_selection()
+    #     child = self.crossover(parent1, parent2)
+    #     child = self.mutate(child)
+    #     return child
     @staticmethod
-    def offspring_task(args):
-        self, population_data = args
-        parent1 = self.wheel_selection()
-        parent2 = self.wheel_selection()
-
-        child = self.crossover(parent1, parent2)
-        child = self.mutate(child)
-
-        return child
+    def wheel_selection_task(population):
+        total_fitness = sum(abs(chromosome.fitness) for chromosome in population.chromosomes)
+        for _ in range(len(population.chromosomes)):
+            rand = random.uniform(0, total_fitness)
+            current_sum = 0
+            for chromosome in population.chromosomes:
+                current_sum += abs(chromosome.fitness)
+                if current_sum >= rand:
+                    return chromosome
 
     def genetic_algorithm(self):
         temp_population = []
         temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
 
-        pool_args = [(self, self.population.data) for _ in range(self.population.populationSize - self.elitism)]
 
-        process_count = 8 # 1, 2, 5, 10, 12
+        process_count = 8  # 1, 2, 5, 10, 12
 
         with multiprocessing.Pool(process_count) as pool:
-            offsprings = pool.map(ParallelGenetic.offspring_task, pool_args)
+            parents = pool.starmap(self.wheel_selection_task, self.population)
+            
 
         temp_population[self.elitism:] = offsprings
 

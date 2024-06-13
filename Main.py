@@ -7,13 +7,13 @@ import time
 
 if __name__ == '__main__':
     purchases = []
-    with open("D:/Git/3 курс 2 семестр/GeneticAlgorithms/data/chromosomes.txt", 'r') as file:
+    with open("./data/chromosomes.txt", 'r') as file:
         for line in file:
             data = line.strip().split(',')
             purchase = Gene(int(data[0]), int(data[1]), data[2])
             purchases.append(purchase)
 
-    chromosome_count = 5000 # 100, 500, 1000, 2500, 5000, 7500, 10000
+    chromosome_count = 100 # 100, 500, 1000, 2500, 5000, 7500, 10000
 
     population = Population(chromosome_count, 10000, 1, purchases)
     population.fitness_all()
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     max_fitness = 0
     max_chrom = Chromosome(0,[])
     start_time = time.time()
-    while stop_iter < 5:
+    while stop_iter < 1:
         ClassicAlgorithm.genetic_algorithm()
         # max_chrom = ClassicAlgorithm.get_max_fitness()
         # if max_chrom.get_fitness() != max_fitness:
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     max_fitness = 0
     max_chrom = Chromosome(0,[])
     start_time = time.time()
-    while stop_iter < 5:
+    while stop_iter < 1:
         ParallelGenetic.genetic_algorithm()
         # max_chrom = ParallelGenetic.get_max_fitness()
         # if max_chrom.get_fitness() != max_fitness:
