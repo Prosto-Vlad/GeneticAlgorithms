@@ -1,16 +1,8 @@
 import random
-import multiprocessing as mp
-from functools import partial
+import threading
+import multiprocessing
 from Chromosome import Chromosome
 from Population import Population
-
-
-# def generate_offspring(i, wheel_selection, crossover, mutate):
-#     parent1 = wheel_selection()
-#     parent2 = wheel_selection()
-#     child = crossover(parent1, parent2)
-#     child = mutate(child)
-#     return child
 
 class ParallelGenetic:
     def __init__(self, population, mutation_rate, crossover_rate, elitism):
@@ -58,26 +50,30 @@ class ParallelGenetic:
             return chromosome
         else:
             return chromosome
+    
+    @staticmethod
+    def offspring_task(args):
+        self, population_data = args
+        parent1 = self.wheel_selection()
+        parent2 = self.wheel_selection()
+
+        child = self.crossover(parent1, parent2)
+        child = self.mutate(child)
+
+        return child
 
     def genetic_algorithm(self):
         temp_population = []
         temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
 
-        process_mass = []
+        pool_args = [(self, self.population.data) for _ in range(self.population.populationSize - self.elitism)]
 
+        process_count = 8 # 1, 2, 5, 10, 12
 
-        #TODO: паралельність. Використовувати threading
-        if __name__ == "__main__":
-            for i in range(self.elitism, self.population.populationSize):
+        with multiprocessing.Pool(process_count) as pool:
+            offsprings = pool.map(ParallelGenetic.offspring_task, pool_args)
 
-                parent1 = self.wheel_selection()
-                parent2 = self.wheel_selection()
-
-                child = self.crossover(parent1, parent2)
-
-                child = self.mutate(child)
-
-                temp_population.append(child)
+        temp_population[self.elitism:] = offsprings
 
         result = Population(self.population.populationSize, self.population.maxBudget, 0, self.population.data)
         result.chromosomes = temp_population

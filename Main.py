@@ -3,70 +3,87 @@ from ClassicGenetic import ClassicGenetic
 from ParallelGenetic import ParallelGenetic
 from Population import Population
 from Chromosome import Chromosome
+import time 
 
-purchases = []
-with open("D:/Git/3 курс 2 семестр/GeneticAlgorithms/data/chromosomes.txt", 'r') as file:
-    for line in file:
-        data = line.strip().split(',')
-        purchase = Gene(int(data[0]), int(data[1]), data[2])
-        purchases.append(purchase)
+if __name__ == '__main__':
+    purchases = []
+    with open("D:/Git/3 курс 2 семестр/GeneticAlgorithms/data/chromosomes.txt", 'r') as file:
+        for line in file:
+            data = line.strip().split(',')
+            purchase = Gene(int(data[0]), int(data[1]), data[2])
+            purchases.append(purchase)
 
-population = Population(20, 15000, 1, purchases)
-population.fitness_all()
+    chromosome_count = 5000 # 100, 500, 1000, 2500, 5000, 7500, 10000
 
-ClassicAlgorithm = ClassicGenetic(population, 0.3, 0.8, 10)
-ParallelGenetic = ParallelGenetic(population, 0.3, 0.8, 10)
+    population = Population(chromosome_count, 10000, 1, purchases)
+    population.fitness_all()
 
-i = 0
-stop_iter = 0
-max_fitness = 0
-max_chrom = Chromosome(0,[])
-while stop_iter < 10000:
-    ParallelGenetic.genetic_algorithm()
-    max_chrom = ParallelGenetic.get_max_fitness()
-    if max_chrom.get_fitness() != max_fitness:
-        max_fitness = max_chrom.get_fitness()
-        stop_iter = 0
-    else:
+    ClassicAlgorithm = ClassicGenetic(population, 0.3, 0.8, int(chromosome_count*0.05))
+    ParallelGenetic = ParallelGenetic(population, 0.3, 0.8, int(chromosome_count*0.05))
+
+
+
+    i = 0
+    stop_iter = 0
+    max_fitness = 0
+    max_chrom = Chromosome(0,[])
+    start_time = time.time()
+    while stop_iter < 5:
+        ClassicAlgorithm.genetic_algorithm()
+        # max_chrom = ClassicAlgorithm.get_max_fitness()
+        # if max_chrom.get_fitness() != max_fitness:
+        #     max_fitness = max_chrom.get_fitness()
+        #     stop_iter = 0
+        # else:
+        #     stop_iter += 1
         stop_iter += 1
-    i += 1
-    if i%1 == 0:
-        max_chrom = ParallelGenetic.get_max_fitness()
-        print("Iter " + str(i))
-        print("Max: " + str(max_chrom.get_fitness()))
-        max_chrom.print_test()
-        ParallelGenetic.population.print_fitness()
-        print()
+        # if i%1000 == 0:
+        #     max_chrom = ClassicAlgorithm.get_max_fitness()
+        #     print("Iter " + str(i))
+        #     print("Max: " + str(max_chrom.get_fitness()))
+        #     #max_chrom.print_test()
+        #     ClassicAlgorithm.population.print_fitness()
+        #     print()
 
-print("Result")
-max_chrom = ParallelGenetic.get_max_fitness()
-max_chrom.print_test()
-ParallelGenetic.population.print_fitness()
-max_chrom.print_test()
+    print("Result")
+    max_chrom = ClassicAlgorithm.get_max_fitness()
+    max_chrom.print_test()
+    #ClassicAlgorithm.population.print_fitness()
+    print()
+    end_time = time.time()  
+    elapsed_time = end_time - start_time 
+    print(f"Classic genetic algorithm executed in {elapsed_time:.2f} seconds")
 
-# i = 0
-# stop_iter = 0
-# max_fitness = 0
-# max_chrom = Chromosome(0,[])
-# while stop_iter < 10000:
-#     ClassicAlgorithm.genetic_algorithm()
-#     max_chrom = ClassicAlgorithm.get_max_fitness()
-#     if max_chrom.get_fitness() != max_fitness:
-#         max_fitness = max_chrom.get_fitness()
-#         stop_iter = 0
-#     else:
-#         stop_iter += 1
-#     i += 1
-#     if i%1000 == 0:
-#         max_chrom = ClassicAlgorithm.get_max_fitness()
-#         print("Iter " + str(i))
-#         print("Max: " + str(max_chrom.get_fitness()))
-#         #max_chrom.print_test()
-#         ClassicAlgorithm.population.print_fitness()
-#         print()
-#
-# print("Result")
-# max_chrom = ClassicAlgorithm.get_max_fitness()
-# max_chrom.print_test()
-# ClassicAlgorithm.population.print_fitness()
-# max_chrom.print_test()
+    print()
+
+    i = 0
+    stop_iter = 0
+    max_fitness = 0
+    max_chrom = Chromosome(0,[])
+    start_time = time.time()
+    while stop_iter < 5:
+        ParallelGenetic.genetic_algorithm()
+        # max_chrom = ParallelGenetic.get_max_fitness()
+        # if max_chrom.get_fitness() != max_fitness:
+        #     max_fitness = max_chrom.get_fitness()
+        #     stop_iter = 0
+        # else:
+        #     stop_iter += 1
+        stop_iter += 1
+        # if i%100 == 0:
+        #     max_chrom = ParallelGenetic.get_max_fitness()
+        #     print("Iter " + str(i))
+        #     print("Max: " + str(max_chrom.get_fitness()))
+        #     max_chrom.print_test()
+        #     ParallelGenetic.population.print_fitness()
+        #     print()
+
+    print("Result")
+    max_chrom = ParallelGenetic.get_max_fitness()
+    max_chrom.print_test()
+    #ParallelGenetic.population.print_fitness()
+    print()
+    end_time = time.time()  
+    elapsed_time = end_time - start_time 
+    print(f"Parallel genetic algorithm executed in {elapsed_time:.2f} seconds")
+
