@@ -1,14 +1,12 @@
 import random
-import threading
 import multiprocessing
 from Chromosome import Chromosome
 from Population import Population
 
 class ParallelGenetic:
-    def __init__(self, population, mutation_rate, crossover_rate, elitism):
+    def __init__(self, population, mutation_rate, elitism):
         self.population = population
         self.mutationRate = mutation_rate
-        self.crossoverRate = crossover_rate
         self.elitism = elitism
 
     def print(self):
@@ -51,34 +49,25 @@ class ParallelGenetic:
         else:
             return chromosome
     
-    # @staticmethod
-    # def offspring_task(self):
-    #     parent1 = self.wheel_selection()
-    #     parent2 = self.wheel_selection()
-    #     child = self.crossover(parent1, parent2)
-    #     child = self.mutate(child)
-    #     return child
     @staticmethod
-    def wheel_selection_task(population):
-        total_fitness = sum(abs(chromosome.fitness) for chromosome in population.chromosomes)
-        for _ in range(len(population.chromosomes)):
-            rand = random.uniform(0, total_fitness)
-            current_sum = 0
-            for chromosome in population.chromosomes:
-                current_sum += abs(chromosome.fitness)
-                if current_sum >= rand:
-                    return chromosome
+    def offspring_task(args):
+        self, population_data = args
+        parent1 = self.wheel_selection()
+        parent2 = self.wheel_selection()
 
-    def genetic_algorithm(self):
+        child = self.crossover(parent1, parent2)
+        child = self.mutate(child)
+
+        return child
+
+    def genetic_algorithm(self, process_count):
         temp_population = []
         temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
 
-
-        process_count = 8  # 1, 2, 5, 10, 12
+        pool_args = [(self, 0,)]
 
         with multiprocessing.Pool(process_count) as pool:
-            parents = pool.starmap(self.wheel_selection_task, self.population)
-            
+            offsprings = pool.map(ParallelGenetic.offspring_task, pool_args)
 
         temp_population[self.elitism:] = offsprings
 

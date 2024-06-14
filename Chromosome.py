@@ -46,12 +46,12 @@ class Chromosome:
         A = 1
         B = 2
         self.fitness = total_popularity * A + unique_genres * B
-        #TODO: придумати більш оптимальний штраф за перевищення
         if total_cost > max_budget:
             if total_cost >= max_budget*2:
                 self.fitness = 0
             else:
-                self.fitness *= max_budget / total_cost
+                percentage_excess = (total_cost - max_budget) / max_budget * 100
+                self.fitness -= self.fitness * (percentage_excess / 100)
 
         #test
         self.total_popularity = total_popularity

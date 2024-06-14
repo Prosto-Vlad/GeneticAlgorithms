@@ -4,10 +4,9 @@ from Population import Population
 
 
 class ClassicGenetic:
-    def __init__(self, population, mutation_rate, crossover_rate, elitism):
+    def __init__(self, population, mutation_rate, elitism):
         self.population = population
         self.mutationRate = mutation_rate
-        self.crossoverRate = crossover_rate
         self.elitism = elitism
 
     def print(self):
