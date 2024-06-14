@@ -17,7 +17,6 @@ class Population:
         for chromosome in self.chromosomes:
             chromosome.calc_fitness(self.maxBudget)
 
-    #TODO ереробити прінт
     def print(self):
         for i in range(self.populationSize):
             print("Chromosome %d" % i)

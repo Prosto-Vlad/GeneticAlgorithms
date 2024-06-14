@@ -3,9 +3,7 @@ from ClassicGenetic import ClassicGenetic
 from ParallelGenetic import ParallelGenetic
 from Population import Population
 from Chromosome import Chromosome
-import copy
 import time
-import datetime
 
 if __name__ == '__main__':
     purchases = []
@@ -15,7 +13,7 @@ if __name__ == '__main__':
             purchase = Gene(int(data[0]), int(data[1]), data[2])
             purchases.append(purchase)
 
-    chromosome_count = [100, 100, 500, 1000, 2500, 5000, 7500, 10000]
+    chromosome_count = [100, 100, 500, 1000, 2500, 5000]
     process_cout = [2, 4, 6, 8, 10, 12]
     for i in range(len(chromosome_count)):
         print("---------------------------------")
@@ -54,31 +52,31 @@ if __name__ == '__main__':
 
         print()
 
-        # i = 0
-        # stop_iter = 0
-        # max_fitness = 0
-        # timeList = []
-        # while stop_iter < 20:
-        #     parallelGenetic = ParallelGenetic(population, 0.3, int(2500*0.05))
+        i = 0
+        stop_iter = 0
+        max_fitness = 0
+        timeList = []
+        while stop_iter < 10:
+            parallelGenetic = ParallelGenetic(population, 0.3, int(chromosome_count[i]*0.05))
 
-        #     start_time = time.time()
+            start_time = time.time()
 
-        #     parallelGenetic.genetic_algorithm(process_cout[i])
+            parallelGenetic.genetic_algorithm(6)
 
-        #     end_time = time.time()
+            end_time = time.time()
 
-        #     total_time_in_seconds = end_time - start_time
-        #     total_time_in_milliseconds = total_time_in_seconds * 1000
-        #     timeList.append(total_time_in_milliseconds)
-        #     stop_iter += 1
+            total_time_in_seconds = end_time - start_time
+            total_time_in_milliseconds = total_time_in_seconds * 1000
+            timeList.append(total_time_in_milliseconds)
+            stop_iter += 1
 
-        # print("Result")
-        # max_chrom = parallelGenetic.get_max_fitness()
-        # max_chrom.print_test()
-        # print()
-        # mean_time = sum(timeList) / len(timeList)
-        # print(f"Parallel genetic algorithm executed in {mean_time:.2f} milliseconds")
-        # for j in range(timeList.__len__()):
-        #     print(f"Time {j+1}: {timeList[j]:.2f} milliseconds")
+        print("Result")
+        max_chrom = parallelGenetic.get_max_fitness()
+        max_chrom.print_test()
+        print()
+        mean_time = sum(timeList) / len(timeList)
+        print(f"Parallel genetic algorithm executed in {mean_time:.2f} milliseconds")
+        for j in range(timeList.__len__()):
+            print(f"Time {j+1}: {timeList[j]:.2f} milliseconds")
             
 
