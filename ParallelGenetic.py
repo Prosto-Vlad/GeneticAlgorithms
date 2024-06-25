@@ -50,24 +50,34 @@ class ParallelGenetic:
             return chromosome
     
     @staticmethod
-    def offspring_task(args):
-        self, population_data = args
-        parent1 = self.wheel_selection()
-        parent2 = self.wheel_selection()
+    def offspring_task(self, args):
+        result = []
 
-        child = self.crossover(parent1, parent2)
-        child = self.mutate(child)
-
-        return child
+        # parent1 = self.wheel_selection()
+        # parent2 = self.wheel_selection()
+        #
+        # child = self.crossover(parent1, parent2)
+        # child = self.mutate(child)
+        #
+        # return child
 
     def genetic_algorithm(self, process_count):
         temp_population = []
         temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
+        population_for_task = self.population.chromosomes[self.elitism:]
 
-        pool_args = [(self, 0,)]
+        chunk_size = round(len(population_for_task)/process_count)
+        print("Chank size " + str(chunk_size))
+        chunks = []
+        for i in range(0, len(population_for_task), chunk_size):
+            if i + chunk_size > len(population_for_task):
+                chunks.append(population_for_task[i:])
+            else:
+                chunks.append(population_for_task[i:i + chunk_size])
+        print(chunks)
 
         with multiprocessing.Pool(process_count) as pool:
-            offsprings = pool.map(ParallelGenetic.offspring_task, pool_args)
+            offsprings = pool.map(ParallelGenetic.offspring_task, chunks)
 
         temp_population[self.elitism:] = offsprings
 
