@@ -15,12 +15,12 @@ class ParallelGenetic:
     def get_max_fitness(self):
         return self.population.calc_max_fitness()
 
-    def wheel_selection(self):
-        total_fitness = sum(abs(chromosome.fitness) for chromosome in self.population.chromosomes)
-        for _ in range(len(self.population.chromosomes)):
+    def wheel_selection(self, population):
+        total_fitness = sum(abs(chromosome.fitness) for chromosome in population)
+        for _ in range(len(population)):
             rand = random.uniform(0, total_fitness)
             current_sum = 0
-            for chromosome in self.population.chromosomes:
+            for chromosome in population:
                 current_sum += abs(chromosome.fitness)
                 if current_sum >= rand:
                     return chromosome
@@ -50,16 +50,23 @@ class ParallelGenetic:
             return chromosome
     
     @staticmethod
-    def offspring_task(self, args):
+    def offspring_task(population):
+        self, population = population.copy()
+
         result = []
 
-        # parent1 = self.wheel_selection()
-        # parent2 = self.wheel_selection()
-        #
-        # child = self.crossover(parent1, parent2)
-        # child = self.mutate(child)
-        #
-        # return child
+        for i in range(len(population)):
+            parent1 = self.wheel_selection(population)
+            parent2 = self.wheel_selection(population)
+
+            child = self.crossover(parent1, parent2)
+            child = self.mutate(child)
+
+            child.calc_fitness(self.population.maxBudget)
+
+            result.append(child)
+
+        return result
 
     def genetic_algorithm(self, process_count):
         temp_population = []
@@ -67,24 +74,26 @@ class ParallelGenetic:
         population_for_task = self.population.chromosomes[self.elitism:]
 
         chunk_size = round(len(population_for_task)/process_count)
-        print("Chank size " + str(chunk_size))
         chunks = []
         for i in range(0, len(population_for_task), chunk_size):
+            temp = [self, ]
             if i + chunk_size > len(population_for_task):
-                chunks.append(population_for_task[i:])
+                temp.append(population_for_task[i:])
             else:
-                chunks.append(population_for_task[i:i + chunk_size])
-        print(chunks)
+                temp.append(population_for_task[i:i + chunk_size])
+            chunks.append(temp)
 
         with multiprocessing.Pool(process_count) as pool:
             offsprings = pool.map(ParallelGenetic.offspring_task, chunks)
 
-        temp_population[self.elitism:] = offsprings
+        for group in offsprings:
+            for item in group:
+                temp_population.append(item)
 
         result = Population(self.population.populationSize, self.population.maxBudget, 0, self.population.data)
         result.chromosomes = temp_population
 
         self.population = result
-        self.population.fitness_all()
+
 
         return result
