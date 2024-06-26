@@ -51,12 +51,14 @@ class ParallelGenetic:
     
     @staticmethod
     def offspring_task(args):
-        self, population_data = args
-        parent1 = self.wheel_selection()
-        parent2 = self.wheel_selection()
+        obj = args
+        parent1 = obj.wheel_selection()
+        parent2 = obj.wheel_selection()
 
-        child = self.crossover(parent1, parent2)
-        child = self.mutate(child)
+        child = obj.crossover(parent1, parent2)
+        child = obj.mutate(child)
+
+        child.calc_fitness(obj.population.maxBudget)
 
         return child
 
@@ -64,10 +66,8 @@ class ParallelGenetic:
         temp_population = []
         temp_population[:self.elitism] = self.population.get_best_chromosome(self.elitism)
 
-        pool_args = [(self, 0,)]
-
         with multiprocessing.Pool(process_count) as pool:
-            offsprings = pool.map(ParallelGenetic.offspring_task, pool_args)
+            offsprings = pool.map(ParallelGenetic.offspring_task, (self for _ in self.population.chromosomes[self.elitism:]))
 
         temp_population[self.elitism:] = offsprings
 
@@ -75,6 +75,5 @@ class ParallelGenetic:
         result.chromosomes = temp_population
 
         self.population = result
-        self.population.fitness_all()
 
         return result
