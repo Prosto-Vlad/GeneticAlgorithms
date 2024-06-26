@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11f94e92-0cfe-49f4-8329-d4e63eb2fd37" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/GeneticAlgorithms.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GeneticAlgorithms.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ParallelGenetic.py" beforeDir="false" afterPath="$PROJECT_DIR$/ParallelGenetic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +80,8 @@
       <workItem from="1718288322108" duration="2513000" />
       <workItem from="1719262871300" duration="1339000" />
       <workItem from="1719292466490" duration="5479000" />
-      <workItem from="1719338935143" duration="6655000" />
+      <workItem from="1719338935143" duration="7114000" />
+      <workItem from="1719378901148" duration="609000" />
     </task>
     <servers />
   </component>
